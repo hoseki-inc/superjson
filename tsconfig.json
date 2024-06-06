@@ -1,22 +1,3 @@
 {
-  "include": ["src"],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ES6",
-    "moduleResolution": "node",
-    "lib": ["esnext"],
-    "importHelpers": false,
-    "declaration": true,
-    "sourceMap": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
-    "downlevelIteration": true
-  }
+	"extends": "./cfg/tsconfig.base.json"
 }
