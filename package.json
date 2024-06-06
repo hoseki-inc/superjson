@@ -1,6 +1,6 @@
 {
 	"name": "@hoseki-inc/superjson",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"type": "module",
 	"repository": {
 		"type": "git",
@@ -32,7 +32,8 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"prepublishOnly": "pnpm run build",
-		"test": "vitest run",
+		"test:node": "vitest --config ./cfg/vitest.config.ts",
+		"test:ts": "tsc --project ./cfg/tsconfig.test.json",
 		"ts:check": "tsc"
 	},
 	"dependencies": {
