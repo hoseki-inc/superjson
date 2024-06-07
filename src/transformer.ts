@@ -65,8 +65,8 @@ const simpleRules = [
   simpleTransformation(
     isBigint,
     'bigint',
-    v => v.toString(),
-    v => {
+    (v) => v.toString(),
+    (v) => {
       if (typeof BigInt !== 'undefined') {
         return BigInt(v);
       }
@@ -79,8 +79,8 @@ const simpleRules = [
   simpleTransformation(
     isDate,
     'Date',
-    v => v.toISOString(),
-    v => new Date(v)
+    (v) => v.toISOString(),
+    (v) => new Date(v)
   ),
 
   simpleTransformation(
@@ -92,7 +92,7 @@ const simpleRules = [
         message: v.message,
       };
 
-      superJson.allowedErrorProps.forEach(prop => {
+      superJson.allowedErrorProps.forEach((prop) => {
         baseError[prop] = (v as any)[prop];
       });
 
@@ -103,7 +103,7 @@ const simpleRules = [
       e.name = v.name;
       e.stack = v.stack;
 
-      superJson.allowedErrorProps.forEach(prop => {
+      superJson.allowedErrorProps.forEach((prop) => {
         (e as any)[prop] = v[prop];
       });
 
@@ -114,8 +114,8 @@ const simpleRules = [
   simpleTransformation(
     isRegExp,
     'regexp',
-    v => '' + v,
-    regex => {
+    (v) => '' + v,
+    (regex) => {
       const body = regex.slice(1, regex.lastIndexOf('/'));
       const flags = regex.slice(regex.lastIndexOf('/') + 1);
       return new RegExp(body, flags);
@@ -127,20 +127,20 @@ const simpleRules = [
     'set',
     // (sets only exist in es6+)
     // eslint-disable-next-line es5/no-es6-methods
-    v => [...v.values()],
-    v => new Set(v)
+    (v) => [...v.values()],
+    (v) => new Set(v)
   ),
   simpleTransformation(
     isMap,
     'map',
-    v => [...v.entries()],
-    v => new Map(v)
+    (v) => [...v.entries()],
+    (v) => new Map(v)
   ),
 
   simpleTransformation<number, 'NaN' | 'Infinity' | '-Infinity', 'number'>(
     (v): v is number => isNaNValue(v) || isInfinite(v),
     'number',
-    v => {
+    (v) => {
       if (isNaNValue(v)) {
         return 'NaN';
       }
@@ -166,8 +166,8 @@ const simpleRules = [
   simpleTransformation(
     isURL,
     'URL',
-    v => v.toString(),
-    v => new URL(v)
+    (v) => v.toString(),
+    (v) => new URL(v)
   ),
 ];
 
@@ -197,7 +197,7 @@ const symbolRule = compositeTransformation(
     const identifier = superJson.symbolRegistry.getIdentifier(s);
     return ['symbol', identifier!];
   },
-  v => v.description,
+  (v) => v.description,
   (_, a, superJson) => {
     const value = superJson.symbolRegistry.getValue(a[1]);
     if (!value) {
@@ -224,8 +224,8 @@ const constructorToName = [
 
 const typedArrayRule = compositeTransformation(
   isTypedArray,
-  v => ['typed-array', v.constructor.name],
-  v => [...v],
+  (v) => ['typed-array', v.constructor.name],
+  (v) => [...v],
   (v, a) => {
     const ctor = constructorToName[a[1]];
 
@@ -265,7 +265,7 @@ const classRule = compositeTransformation(
     }
 
     const result: any = {};
-    allowedProps.forEach(prop => {
+    allowedProps.forEach((prop) => {
       result[prop] = clazz[prop];
     });
     return result;
@@ -288,15 +288,13 @@ const customRule = compositeTransformation(
     return !!superJson.customTransformerRegistry.findApplicable(value);
   },
   (value, superJson) => {
-    const transformer = superJson.customTransformerRegistry.findApplicable(
-      value
-    )!;
+    const transformer =
+      superJson.customTransformerRegistry.findApplicable(value)!;
     return ['custom', transformer.name];
   },
   (value, superJson) => {
-    const transformer = superJson.customTransformerRegistry.findApplicable(
-      value
-    )!;
+    const transformer =
+      superJson.customTransformerRegistry.findApplicable(value)!;
     return transformer.serialize(value);
   },
   (v, a, superJson) => {
@@ -314,7 +312,7 @@ export const transformValue = (
   value: any,
   superJson: SuperJSON
 ): { value: any; type: TypeAnnotation } | undefined => {
-  const applicableCompositeRule = findArr(compositeRules, rule =>
+  const applicableCompositeRule = findArr(compositeRules, (rule) =>
     rule.isApplicable(value, superJson)
   );
   if (applicableCompositeRule) {
@@ -324,7 +322,7 @@ export const transformValue = (
     };
   }
 
-  const applicableSimpleRule = findArr(simpleRules, rule =>
+  const applicableSimpleRule = findArr(simpleRules, (rule) =>
     rule.isApplicable(value, superJson)
   );
 
@@ -338,8 +336,8 @@ export const transformValue = (
   return undefined;
 };
 
-const simpleRulesByAnnotation: Record<string, typeof simpleRules[0]> = {};
-simpleRules.forEach(rule => {
+const simpleRulesByAnnotation: Record<string, (typeof simpleRules)[0]> = {};
+simpleRules.forEach((rule) => {
   simpleRulesByAnnotation[rule.annotation] = rule;
 });
 

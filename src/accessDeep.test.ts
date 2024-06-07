@@ -9,7 +9,7 @@ describe('setDeep', () => {
     };
 
     setDeep(obj, ['a', 0, 0, 0], Number);
-    setDeep(obj, ['a', 0, 1], entries => new Map(entries));
+    setDeep(obj, ['a', 0, 1], (entries) => new Map(entries));
     setDeep(obj, ['a', 0, 1, 0, 1], () => undefined);
 
     expect(obj).toEqual({

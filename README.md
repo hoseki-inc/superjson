@@ -75,9 +75,7 @@ const jsonString = superjson.stringify({ date: new Date(0) });
 And parse your JSON like so:
 
 ```js
-const object = superjson.parse<
-{ date: Date }
->(jsonString);
+const object = superjson.parse < { date: Date } > jsonString;
 
 // object === { date: new Date(0) }
 ```
@@ -272,8 +270,8 @@ import { Decimal } from 'decimal.js';
 SuperJSON.registerCustom<Decimal, string>(
   {
     isApplicable: (v): v is Decimal => Decimal.isDecimal(v),
-    serialize: v => v.toJSON(),
-    deserialize: v => new Decimal(v),
+    serialize: (v) => v.toJSON(),
+    deserialize: (v) => new Decimal(v),
   },
   'decimal.js'
 );

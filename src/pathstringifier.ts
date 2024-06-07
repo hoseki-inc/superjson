@@ -4,10 +4,7 @@ type Path = string[];
 export const escapeKey = (key: string) => key.replace(/\./g, '\\.');
 
 export const stringifyPath = (path: Path): StringifiedPath =>
-  path
-    .map(String)
-    .map(escapeKey)
-    .join('.');
+  path.map(String).map(escapeKey).join('.');
 
 export const parsePath = (string: StringifiedPath) => {
   const result: string[] = [];

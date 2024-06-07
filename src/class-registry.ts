@@ -8,7 +8,7 @@ export interface RegisterOptions {
 
 export class ClassRegistry extends Registry<Class> {
   constructor() {
-    super(c => c.name);
+    super((c) => c.name);
   }
 
   private classToAllowedProps = new Map<Class, string[]>();

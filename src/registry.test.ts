@@ -4,7 +4,7 @@ import { Class } from './types.js';
 import { test, expect } from 'vitest';
 
 test('class registry', () => {
-  const registry = new Registry<Class>(c => c.name);
+  const registry = new Registry<Class>((c) => c.name);
 
   class Car {
     honk() {

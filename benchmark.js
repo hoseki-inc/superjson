@@ -1,5 +1,5 @@
-import Benchmark from "benchmark"
-import SuperJSON from "./dist/index.js"
+import Benchmark from 'benchmark';
+import SuperJSON from './dist/index.js';
 
 const instances = {
   'toy example': {
@@ -86,7 +86,7 @@ for (const [key, instance] of Object.entries(instances)) {
   });
 }
 
-suite.on('cycle', event => {
+suite.on('cycle', (event) => {
   console.log('' + event.target);
 });
 

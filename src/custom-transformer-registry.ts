@@ -16,7 +16,7 @@ export class CustomTransformerRegistry {
   }
 
   findApplicable<T>(v: T) {
-    return find(this.transfomers, transformer =>
+    return find(this.transfomers, (transformer) =>
       transformer.isApplicable(v)
     ) as CustomTransfomer<T, JSONValue> | undefined;
   }

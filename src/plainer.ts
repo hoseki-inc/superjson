@@ -56,7 +56,7 @@ export function applyValueAnnotations(
   superJson: SuperJSON
 ) {
   traverse(annotations, (type, path) => {
-    plain = setDeep(plain, path, v => untransformValue(v, type, superJson));
+    plain = setDeep(plain, path, (v) => untransformValue(v, type, superJson));
   });
 
   return plain;
@@ -69,14 +69,14 @@ export function applyReferentialEqualityAnnotations(
   function apply(identicalPaths: string[], path: string) {
     const object = getDeep(plain, parsePath(path));
 
-    identicalPaths.map(parsePath).forEach(identicalObjectPath => {
+    identicalPaths.map(parsePath).forEach((identicalObjectPath) => {
       plain = setDeep(plain, identicalObjectPath, () => object);
     });
   }
 
   if (isArray(annotations)) {
     const [root, other] = annotations;
-    root.forEach(identicalPath => {
+    root.forEach((identicalPath) => {
       plain = setDeep(plain, parsePath(identicalPath), () => plain);
     });
 
@@ -124,7 +124,7 @@ export function generateReferentialEqualityAnnotations(
   const result: Record<string, string[]> = {};
   let rootEqualityPaths: string[] | undefined = undefined;
 
-  identitites.forEach(paths => {
+  identitites.forEach((paths) => {
     if (paths.length <= 1) {
       return;
     }
@@ -134,7 +134,7 @@ export function generateReferentialEqualityAnnotations(
     // if we're deduping though, only the first entry will still exist, so we can't do this optimisation.
     if (!dedupe) {
       paths = paths
-        .map(path => path.map(String))
+        .map((path) => path.map(String))
         .sort((a, b) => a.length - b.length);
     }
 
@@ -143,9 +143,8 @@ export function generateReferentialEqualityAnnotations(
     if (representativePath.length === 0) {
       rootEqualityPaths = identicalPaths.map(stringifyPath);
     } else {
-      result[stringifyPath(representativePath)] = identicalPaths.map(
-        stringifyPath
-      );
+      result[stringifyPath(representativePath)] =
+        identicalPaths.map(stringifyPath);
     }
   });
 
